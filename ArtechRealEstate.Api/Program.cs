@@ -11,11 +11,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// تفعيل الـ CORS عشان الـ React App
+// تفعيل الـ CORS عشان الـ React App (تم إضافة البورت الحالي 5174)
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp",
-        policy => policy.WithOrigins("http://localhost:5173", "http://localhost:3000")
+        policy => policy.WithOrigins("http://localhost:5173", "http://localhost:5174", "http://localhost:3000")
                         .AllowAnyHeader()
                         .AllowAnyMethod());
 });
@@ -29,8 +29,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseStaticFiles();
+
+// يجب أن يتم وضع UseCors هنا قبل UseAuthorization و MapControllers
 app.UseCors("AllowReactApp");
+
 app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();

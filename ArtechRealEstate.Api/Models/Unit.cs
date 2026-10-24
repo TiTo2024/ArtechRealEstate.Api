@@ -1,4 +1,6 @@
-﻿namespace ArtechRealEstate.Api.Models
+﻿using System.Text.Json.Serialization;
+
+namespace ArtechRealEstate.Api.Models
 {
     public enum UnitAvailability
     {
@@ -20,6 +22,8 @@
 
         // Foreign Key
         public int ProjectId { get; set; }
+
+        [JsonIgnore] // منع الدوران اللانهائي للبيانات أثناء Serializing
         public Project? Project { get; set; }
     }
 }

@@ -124,3 +124,4 @@ F:\vs\ArtechRealEstate\ArtechRealEstate.Api\ArtechRealEstate.Api\obj\Debug\net10
 F:\vs\ArtechRealEstate\ArtechRealEstate.Api\ArtechRealEstate.Api\obj\Debug\net10.0\ArtechRealEstate.Api.pdb
 F:\vs\ArtechRealEstate\ArtechRealEstate.Api\ArtechRealEstate.Api\obj\Debug\net10.0\ArtechRealEstate.Api.genruntimeconfig.cache
 F:\vs\ArtechRealEstate\ArtechRealEstate.Api\ArtechRealEstate.Api\obj\Debug\net10.0\ref\ArtechRealEstate.Api.dll
+F:\vs\ArtechRealEstate\ArtechRealEstate.Api\ArtechRealEstate.Api\obj\Debug\net10.0\ArtechRealEstate.Api.sourcelink.json
