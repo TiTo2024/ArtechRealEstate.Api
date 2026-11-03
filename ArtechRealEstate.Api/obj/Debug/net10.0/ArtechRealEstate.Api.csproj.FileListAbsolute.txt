@@ -117,7 +117,6 @@ F:\vs\ArtechRealEstate\ArtechRealEstate.Api\ArtechRealEstate.Api\obj\Debug\net10
 F:\vs\ArtechRealEstate\ArtechRealEstate.Api\ArtechRealEstate.Api\obj\Debug\net10.0\staticwebassets.development.json
 F:\vs\ArtechRealEstate\ArtechRealEstate.Api\ArtechRealEstate.Api\obj\Debug\net10.0\staticwebassets.build.endpoints.json
 F:\vs\ArtechRealEstate\ArtechRealEstate.Api\ArtechRealEstate.Api\obj\Debug\net10.0\swae.build.ex.cache
-F:\vs\ArtechRealEstate\ArtechRealEstate.Api\ArtechRealEstate.Api\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
 F:\vs\ArtechRealEstate\ArtechRealEstate.Api\ArtechRealEstate.Api\obj\Debug\net10.0\ArtechRe.3AA958C5.Up2Date
 F:\vs\ArtechRealEstate\ArtechRealEstate.Api\ArtechRealEstate.Api\obj\Debug\net10.0\ArtechRealEstate.Api.dll
 F:\vs\ArtechRealEstate\ArtechRealEstate.Api\ArtechRealEstate.Api\obj\Debug\net10.0\refint\ArtechRealEstate.Api.dll
@@ -125,3 +124,4 @@ F:\vs\ArtechRealEstate\ArtechRealEstate.Api\ArtechRealEstate.Api\obj\Debug\net10
 F:\vs\ArtechRealEstate\ArtechRealEstate.Api\ArtechRealEstate.Api\obj\Debug\net10.0\ArtechRealEstate.Api.genruntimeconfig.cache
 F:\vs\ArtechRealEstate\ArtechRealEstate.Api\ArtechRealEstate.Api\obj\Debug\net10.0\ref\ArtechRealEstate.Api.dll
 F:\vs\ArtechRealEstate\ArtechRealEstate.Api\ArtechRealEstate.Api\obj\Debug\net10.0\ArtechRealEstate.Api.sourcelink.json
+F:\vs\ArtechRealEstate\ArtechRealEstate.Api\ArtechRealEstate.Api\bin\Debug\net10.0\ArtechRealEstate.Api.staticwebassets.runtime.json
