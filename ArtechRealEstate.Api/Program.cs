@@ -21,8 +21,12 @@ builder.Services
     {
         options.Cookie.Name = "Artech.Admin";
         options.Cookie.HttpOnly = true;
-        options.Cookie.SameSite = SameSiteMode.Lax;
-        options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+        options.Cookie.SameSite = builder.Environment.IsDevelopment()
+            ? SameSiteMode.Lax
+            : SameSiteMode.None;
+        options.Cookie.SecurePolicy = builder.Environment.IsDevelopment()
+            ? CookieSecurePolicy.SameAsRequest
+            : CookieSecurePolicy.Always;
         options.ExpireTimeSpan = TimeSpan.FromHours(8);
         options.SlidingExpiration = true;
         options.Events.OnRedirectToLogin = context =>
@@ -38,7 +42,11 @@ builder.Services.AddAuthorization();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp",
-        policy => policy.WithOrigins("http://localhost:5173", "http://localhost:5174", "http://localhost:3000")
+        policy => policy.WithOrigins(
+                            "http://localhost:5173",
+                            "http://localhost:5174",
+                            "http://localhost:3000",
+                            "https://artech-real-estate-api.vercel.app")
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials());

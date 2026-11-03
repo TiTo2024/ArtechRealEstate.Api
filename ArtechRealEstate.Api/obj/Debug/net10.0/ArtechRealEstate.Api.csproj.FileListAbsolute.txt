@@ -125,4 +125,11 @@ F:\vs\ArtechRealEstate\ArtechRealEstate.Api\ArtechRealEstate.Api\obj\Debug\net10
 F:\vs\ArtechRealEstate\ArtechRealEstate.Api\ArtechRealEstate.Api\obj\Debug\net10.0\ref\ArtechRealEstate.Api.dll
 F:\vs\ArtechRealEstate\ArtechRealEstate.Api\ArtechRealEstate.Api\obj\Debug\net10.0\ArtechRealEstate.Api.sourcelink.json
 F:\vs\ArtechRealEstate\ArtechRealEstate.Api\ArtechRealEstate.Api\bin\Debug\net10.0\ArtechRealEstate.Api.staticwebassets.runtime.json
-F:\vs\ArtechRealEstate\ArtechRealEstate.Api\ArtechRealEstate.Api\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt
+C:\Users\TITO\AppData\Local\Temp\ArtechRealEstate.Api-build\appsettings.Development.json
+C:\Users\TITO\AppData\Local\Temp\ArtechRealEstate.Api-build\appsettings.json
+C:\Users\TITO\AppData\Local\Temp\ArtechRealEstate.Api-build\ArtechRealEstate.Api.staticwebassets.runtime.json
+C:\Users\TITO\AppData\Local\Temp\ArtechRealEstate.Api-build\ArtechRealEstate.Api.staticwebassets.endpoints.json
+C:\Users\TITO\AppData\Local\Temp\ArtechRealEstate.Api-build\ArtechRealEstate.Api.deps.json
+C:\Users\TITO\AppData\Local\Temp\ArtechRealEstate.Api-build\ArtechRealEstate.Api.runtimeconfig.json
+C:\Users\TITO\AppData\Local\Temp\ArtechRealEstate.Api-build\ArtechRealEstate.Api.dll
+C:\Users\TITO\AppData\Local\Temp\ArtechRealEstate.Api-build\ArtechRealEstate.Api.pdb
