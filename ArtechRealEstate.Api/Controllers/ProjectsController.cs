@@ -17,12 +17,13 @@ namespace ArtechRealEstate.Api.Controllers
             _context = context;
         }
 
-        // GET: api/Projects (جلب جميع المشاريع مع الوحدات التابعة لها)
+        // GET: api/Projects (جلب جميع المشاريع مع الوحدات ومعرض الصور)
         [HttpGet]
         public async Task<IActionResult> GetProjects()
         {
             var projects = await _context.Projects
-                .Include(p => p.Units) // جلب الوحدات المرتبطة بكل مشروع
+                .Include(p => p.Units)
+                .Include(p => p.GalleryImages)
                 .ToListAsync();
 
             return Ok(projects);
@@ -34,6 +35,7 @@ namespace ArtechRealEstate.Api.Controllers
         {
             var project = await _context.Projects
                 .Include(p => p.Units)
+                .Include(p => p.GalleryImages)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (project == null)
@@ -44,8 +46,9 @@ namespace ArtechRealEstate.Api.Controllers
             return Ok(project);
         }
 
-        // POST: api/Projects (الإضافة الاحترافية باستخدام DTO)
+        // POST: api/Projects (إنشاء مشروع جديد)
         [HttpPost]
+        [Microsoft.AspNetCore.Authorization.Authorize]
         public async Task<IActionResult> CreateProject([FromBody] CreateProjectDto dto)
         {
             if (!ModelState.IsValid)
@@ -59,12 +62,25 @@ namespace ArtechRealEstate.Api.Controllers
                 Description = dto.Description,
                 Location = dto.Location,
                 StartingPrice = dto.StartingPrice,
-                Type = (ProjectType)dto.Type,       // التحويل الصريح للـ Enum
-                Status = (ProjectStatus)dto.Status, // التحويل الصريح للـ Enum
+                Type = (ProjectType)dto.Type,
+                Status = (ProjectStatus)dto.Status,
                 IsPublished = dto.IsPublished,
                 CoverImageUrl = dto.CoverImageUrl,
-                GalleryImages = dto.GalleryImages ?? new List<string>(),
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.UtcNow,
+                Units = dto.Units.Select(unit => new Unit
+                {
+                    UnitNumber = unit.UnitNumber,
+                    AreaM2 = unit.AreaM2,
+                    Floor = unit.Floor,
+                    Bedrooms = unit.Bedrooms,
+                    Bathrooms = unit.Bathrooms,
+                    Price = unit.Price,
+                    Availability = (UnitAvailability)unit.Availability
+                }).ToList(),
+                GalleryImages = dto.GalleryImages.Select(image => new ProjectImage
+                {
+                    ImageUrl = image.ImageUrl
+                }).ToList()
             };
 
             _context.Projects.Add(project);
@@ -73,8 +89,9 @@ namespace ArtechRealEstate.Api.Controllers
             return CreatedAtAction(nameof(GetProject), new { id = project.Id }, project);
         }
 
-        // PUT: api/Projects/5 (تعديل مشروع موجود)
+        // PUT: api/Projects/5 (تعديل بيانات المشروع الأساسية)
         [HttpPut("{id}")]
+        [Microsoft.AspNetCore.Authorization.Authorize]
         public async Task<IActionResult> UpdateProject(int id, [FromBody] CreateProjectDto dto)
         {
             if (!ModelState.IsValid)
@@ -82,7 +99,11 @@ namespace ArtechRealEstate.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var project = await _context.Projects.FindAsync(id);
+            var project = await _context.Projects
+                .Include(p => p.Units)
+                .Include(p => p.GalleryImages)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
             if (project == null)
             {
                 return NotFound(new { message = "المشروع غير موجود" });
@@ -96,7 +117,24 @@ namespace ArtechRealEstate.Api.Controllers
             project.Status = (ProjectStatus)dto.Status;
             project.IsPublished = dto.IsPublished;
             project.CoverImageUrl = dto.CoverImageUrl;
-            project.GalleryImages = dto.GalleryImages ?? new List<string>();
+
+            _context.Units.RemoveRange(project.Units);
+            project.Units = dto.Units.Select(unit => new Unit
+            {
+                UnitNumber = unit.UnitNumber,
+                AreaM2 = unit.AreaM2,
+                Floor = unit.Floor,
+                Bedrooms = unit.Bedrooms,
+                Bathrooms = unit.Bathrooms,
+                Price = unit.Price,
+                Availability = (UnitAvailability)unit.Availability
+            }).ToList();
+
+            _context.ProjectImages.RemoveRange(project.GalleryImages);
+            project.GalleryImages = dto.GalleryImages.Select(image => new ProjectImage
+            {
+                ImageUrl = image.ImageUrl
+            }).ToList();
 
             await _context.SaveChangesAsync();
 
@@ -105,6 +143,7 @@ namespace ArtechRealEstate.Api.Controllers
 
         // DELETE: api/Projects/5 (حذف مشروع)
         [HttpDelete("{id}")]
+        [Microsoft.AspNetCore.Authorization.Authorize]
         public async Task<IActionResult> DeleteProject(int id)
         {
             var project = await _context.Projects.FindAsync(id);

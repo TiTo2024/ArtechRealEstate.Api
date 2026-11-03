@@ -43,6 +43,7 @@ namespace ArtechRealEstate.Api.Controllers
 
         // POST: api/Units (إضافة وحدة مع ربطها بمشروع)
         [HttpPost]
+        [Microsoft.AspNetCore.Authorization.Authorize]
         public async Task<IActionResult> CreateUnit([FromBody] CreateUnitDto dto)
         {
             if (!ModelState.IsValid)
@@ -77,6 +78,7 @@ namespace ArtechRealEstate.Api.Controllers
 
         // PUT: api/Units/5
         [HttpPut("{id}")]
+        [Microsoft.AspNetCore.Authorization.Authorize]
         public async Task<IActionResult> UpdateUnit(int id, [FromBody] CreateUnitDto dto)
         {
             var unit = await _context.Units.FindAsync(id);
@@ -101,6 +103,7 @@ namespace ArtechRealEstate.Api.Controllers
 
         // DELETE: api/Units/5
         [HttpDelete("{id}")]
+        [Microsoft.AspNetCore.Authorization.Authorize]
         public async Task<IActionResult> DeleteUnit(int id)
         {
             var unit = await _context.Units.FindAsync(id);

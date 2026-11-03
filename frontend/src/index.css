@@ -60,14 +60,11 @@ body {
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
+  width: 100%;
+  max-width: none;
   min-height: 100svh;
-  display: flex;
-  flex-direction: column;
+  margin: 0;
+  overflow-x: clip;
   box-sizing: border-box;
 }
 
@@ -113,4 +110,118 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+
+@keyframes motion-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes motion-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes motion-slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes motion-slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes motion-hero-image-in {
+  from {
+    opacity: 0;
+    transform: translateX(36px) scale(1.045);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes motion-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.motion-fade-in {
+  animation: motion-fade-in 650ms ease-out both;
+}
+
+.motion-rise-in {
+  animation: motion-rise-in 700ms cubic-bezier(.2, .7, .2, 1) both;
+}
+
+.motion-slide-in-left {
+  animation: motion-slide-in-left 700ms cubic-bezier(.2, .7, .2, 1) both;
+}
+
+.motion-slide-in-right {
+  animation: motion-slide-in-right 700ms cubic-bezier(.2, .7, .2, 1) both;
+}
+
+.motion-hero-image {
+  transform-origin: center right;
+  animation: motion-hero-image-in 1100ms 100ms cubic-bezier(.2, .7, .2, 1) both;
+}
+
+.motion-pop-in {
+  animation: motion-pop-in 320ms cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 650ms cubic-bezier(.2, .7, .2, 1),
+    transform 650ms cubic-bezier(.2, .7, .2, 1);
+}
+
+.scroll-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+
+  .scroll-reveal {
+    opacity: 1;
+    transform: none;
+  }
 }

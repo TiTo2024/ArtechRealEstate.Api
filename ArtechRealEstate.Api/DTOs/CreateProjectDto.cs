@@ -24,6 +24,37 @@ namespace ArtechRealEstate.Api.DTOs
 
         public string? CoverImageUrl { get; set; }
 
-        public List<string>? GalleryImages { get; set; } = new();
+        public List<CreateProjectUnitDto> Units { get; set; } = [];
+
+        public List<CreateProjectGalleryImageDto> GalleryImages { get; set; } = [];
+    }
+
+    public class CreateProjectUnitDto
+    {
+        [Required]
+        public string UnitNumber { get; set; } = string.Empty;
+
+        [Range(0.01, double.MaxValue)]
+        public double AreaM2 { get; set; }
+
+        public int Floor { get; set; }
+
+        [Range(0, 50)]
+        public int Bedrooms { get; set; }
+
+        [Range(0, 50)]
+        public int Bathrooms { get; set; }
+
+        [Range(0, double.MaxValue)]
+        public decimal Price { get; set; }
+
+        public int Availability { get; set; }
+    }
+
+    public class CreateProjectGalleryImageDto
+    {
+        [Required]
+        [Url]
+        public string ImageUrl { get; set; } = string.Empty;
     }
 }

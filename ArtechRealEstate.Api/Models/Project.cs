@@ -23,10 +23,11 @@
         public ProjectStatus Status { get; set; } = ProjectStatus.UnderConstruction;
         public bool IsPublished { get; set; } = false;
         public string? CoverImageUrl { get; set; }
-        public List<string> GalleryImages { get; set; } = new();
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         // العلاقة: المشروع الواحد محتوي على عدة وحدات
         public ICollection<Unit> Units { get; set; } = new List<Unit>();
+
+        public ICollection<ProjectImage> GalleryImages { get; set; } = new List<ProjectImage>();
     }
 }
