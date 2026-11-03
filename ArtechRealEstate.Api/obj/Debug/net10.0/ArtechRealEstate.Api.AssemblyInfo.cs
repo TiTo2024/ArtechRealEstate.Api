@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ArtechRealEstate.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c76e6ef2e724ded4534fb3171452d0efb247db3d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e6e2ed5ef507df4987e06f64393bb93aed6d1873")]
 [assembly: System.Reflection.AssemblyProductAttribute("ArtechRealEstate.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ArtechRealEstate.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

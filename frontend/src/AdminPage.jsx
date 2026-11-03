@@ -359,7 +359,7 @@
 //           <h3 className="text-xl font-bold mb-6">قائمة المشاريع الحالية</h3>
 //           {loading && <p className="text-gray-400">جاري تحميل المشاريع...</p>}
 //           {error && <p className="text-red-400">{error}</p>}
-
+          
 //           {!loading && !error && projects.length === 0 && (
 //             <p className="text-gray-400 bg-gray-800 p-6 rounded-xl text-center border border-gray-700">لا توجد مشاريع مضافة حتى الآن.</p>
 //           )}
