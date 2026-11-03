@@ -16,17 +16,31 @@ export default function PublicSite() {
   const [requestOpen, setRequestOpen] = useState(false);
   const [requestSubmitted, setRequestSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [projectsError, setProjectsError] = useState('');
 
   useEffect(() => {
     api.get('/Projects')
-      .then(({ data }) => setProjects(data.filter((project) => project.isPublished)))
-      .catch((error) => console.error(error))
+      .then(({ data }) => {
+        if (!Array.isArray(data)) {
+          setProjects([]);
+          setProjectsError('The API returned an invalid response. Check the API URL.');
+          return;
+        }
+
+        setProjects(data.filter((project) => project.isPublished));
+        setProjectsError('');
+      })
+      .catch((error) => {
+        console.error(error);
+        setProjects([]);
+        setProjectsError('Unable to connect to the API. Check that it is running.');
+      })
       .finally(() => setLoading(false));
   }, []);
 
   const visibleProjects = useMemo(() => activeType === 'all'
-    ? projects
-    : projects.filter((project) => typeName(project.type) === activeType), [activeType, projects]);
+    ? (Array.isArray(projects) ? projects : [])
+    : (Array.isArray(projects) ? projects : []).filter((project) => typeName(project.type) === activeType), [activeType, projects]);
 
   useEffect(() => {
     const elements = document.querySelectorAll('.public-site .scroll-reveal');
@@ -85,8 +99,10 @@ export default function PublicSite() {
     setRequestSubmitted(true);
   };
 
-  const galleryImages = selectedProject?.galleryImages?.length
-    ? [selectedProject.coverImageUrl, ...selectedProject.galleryImages.map((image) => image.imageUrl)]
+  const selectedGalleryImages = Array.isArray(selectedProject?.galleryImages) ? selectedProject.galleryImages : [];
+  const selectedUnits = Array.isArray(selectedProject?.units) ? selectedProject.units : [];
+  const galleryImages = selectedGalleryImages.length
+    ? [selectedProject.coverImageUrl, ...selectedGalleryImages.map((image) => image.imageUrl)]
     : selectedProject?.coverImageUrl ? [selectedProject.coverImageUrl] : [];
 
   const showPreviousGalleryImage = () => {
@@ -148,6 +164,8 @@ export default function PublicSite() {
 
           {loading ? (
             <p className="data-message">Loading projects…</p>
+          ) : projectsError ? (
+            <p className="data-message" role="alert">{projectsError}</p>
           ) : visibleProjects.length === 0 ? (
             <p className="data-message">No published projects are available right now.</p>
           ) : (
@@ -208,9 +226,9 @@ export default function PublicSite() {
             <button className="modal-close" onClick={closeProject} type="button" aria-label="Close">×</button>
             <div className="project-modal-media">
               <img src={selectedProject.coverImageUrl} alt={selectedProject.name} />
-              {selectedProject.galleryImages?.length > 0 && (
+              {selectedGalleryImages.length > 0 && (
                 <div className="project-gallery-grid" aria-label="Project gallery">
-                  {selectedProject.galleryImages.map((image, index) => (
+                  {selectedGalleryImages.map((image, index) => (
                     <button key={image.id} type="button" onClick={() => setActiveGalleryIndex(index + 1)}>
                       <img src={image.imageUrl} alt={`${selectedProject.name} gallery ${index + 1}`} />
                     </button>
@@ -226,10 +244,10 @@ export default function PublicSite() {
                 <div><small>Starting from</small><strong>EGP {formatPrice(selectedProject.startingPrice)}</strong></div>
                 <div><small>Project status</small><strong>{statusName(selectedProject.status)}</strong></div>
               </div>
-              {selectedProject.units?.length > 0 && (
+              {selectedUnits.length > 0 && (
                 <div className="units-preview">
                   <h3>All units</h3>
-                  {selectedProject.units.map((unit) => (
+                  {selectedUnits.map((unit) => (
                     <article key={unit.id}>
                       <h4>Unit {unit.unitNumber}</h4>
                       <div className="unit-detail-grid">

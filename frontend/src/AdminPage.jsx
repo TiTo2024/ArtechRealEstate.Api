@@ -546,11 +546,8 @@
 //   );
 // }
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import api from './Api/axiosInstance';
 import ProjectGalleryManager from './ProjectGalleryManager';
-
-const API_BASE_URL = 'http://localhost:5275/api';
 
 export default function AdminPage({ user, onSignOut }) {
   const [projects, setProjects] = useState([]);
@@ -613,10 +610,17 @@ export default function AdminPage({ user, onSignOut }) {
     try {
       setLoading(true);
       const response = await api.get('/Projects');
+      if (!Array.isArray(response.data)) {
+        setProjects([]);
+        setError('استجابة غير صحيحة من الـ Backend. تحقق من رابط الـ API.');
+        return;
+      }
+
       setProjects(response.data);
       setError(null);
     } catch (err) {
       console.error(err);
+      setProjects([]);
       setError('فشل في الاتصال بالـ Backend. تأكد أنه يعمل!');
     } finally {
       setLoading(false);
@@ -679,9 +683,16 @@ export default function AdminPage({ user, onSignOut }) {
     try {
       setLoadingUnits(true);
       const response = await api.get(`/Units/project/${projectId}`);
+      if (!Array.isArray(response.data)) {
+        setProjectUnits([]);
+        alert('استجابة غير صحيحة عند جلب الوحدات. تحقق من رابط الـ API.');
+        return;
+      }
+
       setProjectUnits(response.data);
     } catch (err) {
       console.error(err);
+      setProjectUnits([]);
       alert('حدث خطأ أثناء جلب الوحدات.');
     } finally {
       setLoadingUnits(false);
@@ -694,7 +705,8 @@ export default function AdminPage({ user, onSignOut }) {
   };
 
   const handleEditProjectClick = (project) => {
-    const [primaryUnit, ...additionalUnits] = project.units || [];
+    const [primaryUnit, ...additionalUnits] = Array.isArray(project.units) ? project.units : [];
+    const galleryImages = Array.isArray(project.galleryImages) ? project.galleryImages : [];
     setEditingProjectId(project.id);
     setProjectForm({
       name: project.name,
@@ -706,7 +718,7 @@ export default function AdminPage({ user, onSignOut }) {
       isPublished: project.isPublished,
       coverImageUrl: project.coverImageUrl || 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00',
       units: additionalUnits,
-      galleryImages: (project.galleryImages || []).map((image) => image.imageUrl)
+      galleryImages: galleryImages.map((image) => image.imageUrl)
     });
     setDraftUnit(primaryUnit ? {
       unitNumber: primaryUnit.unitNumber,
@@ -748,7 +760,7 @@ export default function AdminPage({ user, onSignOut }) {
         type: parseInt(projectForm.type),
         status: parseInt(projectForm.status),
         units: !draftUnit.unitNumber
-          ? projectForm.units
+          ? (Array.isArray(projectForm.units) ? projectForm.units : [])
           : [{
               ...draftUnit,
               areaM2: parseFloat(draftUnit.areaM2),
@@ -758,7 +770,8 @@ export default function AdminPage({ user, onSignOut }) {
               price: 0,
               availability: 0
             }],
-        galleryImages: projectForm.galleryImages.map((imageUrl) => ({ imageUrl }))
+        galleryImages: (Array.isArray(projectForm.galleryImages) ? projectForm.galleryImages : [])
+          .map((imageUrl) => ({ imageUrl }))
       };
 
       if (editingProjectId) {
@@ -970,7 +983,7 @@ export default function AdminPage({ user, onSignOut }) {
                   </div>
                   {projectForm.galleryImages.length > 0 && (
                     <div className="draft-gallery-list">
-                      {projectForm.galleryImages.map((imageUrl, index) => (
+                      {(Array.isArray(projectForm.galleryImages) ? projectForm.galleryImages : []).map((imageUrl, index) => (
                         <div className="draft-gallery-row" key={`${imageUrl}-${index}`}>
                           <img src={imageUrl} alt={`Project gallery ${index + 1}`} />
                           <span>{imageUrl}</span>
@@ -998,7 +1011,7 @@ export default function AdminPage({ user, onSignOut }) {
             <p className="admin-empty">No projects have been added yet.</p>
           ) : (
             <div className="admin-project-grid">
-              {projects.map((project) => (
+              {(Array.isArray(projects) ? projects : []).map((project) => (
                 <article className="admin-project-card scroll-reveal" key={project.id}>
                   <img src={project.coverImageUrl} alt={project.name} />
                   <div className="admin-project-card-body">
@@ -1048,7 +1061,7 @@ export default function AdminPage({ user, onSignOut }) {
               </form>
               <div className="admin-unit-list">
                 <h3>Units</h3>
-                {loadingUnits ? <p>Loading units…</p> : projectUnits.length === 0 ? <p>No units added yet.</p> : projectUnits.map((unit) => (
+                {loadingUnits ? <p>Loading units…</p> : projectUnits.length === 0 ? <p>No units added yet.</p> : (Array.isArray(projectUnits) ? projectUnits : []).map((unit) => (
                   <div className="admin-unit-row" key={unit.id}>
                     <span><strong>Unit {unit.unitNumber}</strong><small>{unit.areaM2} m² · Floor {unit.floor}</small></span>
                     <strong>EGP {unit.price.toLocaleString()}</strong>

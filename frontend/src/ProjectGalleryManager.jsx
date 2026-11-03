@@ -16,9 +16,10 @@ const ProjectGalleryManager = ({ projectId }) => {
     const fetchGallery = async () => {
         try {
             const data = await getProjectGallery(projectId);
-            setImages(data);
+            setImages(Array.isArray(data) ? data : []);
         } catch (error) {
             console.error("خطأ في جلب صور المعرض:", error);
+            setImages([]);
         }
     };
 
@@ -33,7 +34,7 @@ const ProjectGalleryManager = ({ projectId }) => {
                 projectId: projectId
             };
             const added = await addImageToGallery(newImage);
-            setImages([...images, added]);
+            setImages((currentImages) => [...currentImages, added]);
             setNewImageUrl(''); // تفريغ الحقل بعد الإضافة
         } catch (error) {
             console.error("خطأ في إضافة الصورة:", error);
@@ -47,7 +48,7 @@ const ProjectGalleryManager = ({ projectId }) => {
 
         try {
             await deleteGalleryImage(id);
-            setImages(images.filter(img => img.id !== id));
+            setImages((currentImages) => currentImages.filter(img => img.id !== id));
         } catch (error) {
             console.error("خطأ في حذف الصورة:", error);
         }
